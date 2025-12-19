@@ -209,7 +209,7 @@ export default function Home() {
               <h4 className="font-bold mb-4 text-gray-200">Contato</h4>
               <ul className="space-y-2 text-sm text-gray-400">
                 <li>suporte@chipfederal.com.br</li>
-                <li>(11) 99999-9999</li>
+                <li><a href="https://wa.me/5592985528004" target="_blank" rel="noreferrer" className="hover:text-primary transition-colors">(92) 98552-8004</a></li>
               </ul>
             </div>
           </div>
