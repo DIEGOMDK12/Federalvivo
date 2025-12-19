@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { insertLeadSchema, type InsertLead } from "@shared/schema";
+import { insertLeadSchema, type InsertLead, PLANS } from "@shared/schema";
 import { useCreateLead } from "@/hooks/use-leads";
 import {
   Form,
@@ -19,13 +19,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Loader2, Send, CheckCircle2 } from "lucide-react";
+import { Loader2, Send, CheckCircle2, ExternalLink } from "lucide-react";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Card } from "@/components/ui/card";
+
+const PURCHASE_LINK = "https://federalassociados.com.br/pbi/cadastro/16484217122025080607";
 
 export function LeadForm() {
   const { mutate, isPending } = useCreateLead();
   const [isSuccess, setIsSuccess] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
 
   const form = useForm<InsertLead>({
     resolver: zodResolver(insertLeadSchema),
@@ -33,13 +37,29 @@ export function LeadForm() {
       name: "",
       whatsapp: "",
       operator: "vivo",
+      plan: "",
+      price: "",
     },
   });
 
+  const selectedOperator = form.watch("operator") as keyof typeof PLANS;
+  const operatorPlans = PLANS[selectedOperator] || [];
+
   function onSubmit(data: InsertLead) {
-    mutate(data, {
-      onSuccess: () => setIsSuccess(true),
-    });
+    if (!selectedPlan) {
+      form.setError("plan", { message: "Selecione um plano" });
+      return;
+    }
+    
+    const plan = operatorPlans.find(p => p.id === selectedPlan);
+    if (plan) {
+      mutate(
+        { ...data, plan: plan.name, price: plan.price },
+        {
+          onSuccess: () => setIsSuccess(true),
+        }
+      );
+    }
   }
 
   const waLink = `https://wa.me/5511999999999?text=${encodeURIComponent(
@@ -70,18 +90,17 @@ export function LeadForm() {
                 <CheckCircle2 className="w-10 h-10 text-green-600" />
               </div>
               <h4 className="text-xl font-bold text-gray-900">
-                Solicitação Recebida!
+                Vamos para Checkout!
               </h4>
               <p className="text-gray-600">
-                Nossa equipe entrará em contato pelo WhatsApp informado.
+                Clique abaixo para finalizar sua compra e escolher seu chip.
               </p>
               <Button
-                asChild
-                className="w-full mt-6 bg-[#25D366] hover:bg-[#128C7E] text-white font-bold h-12 text-lg shadow-lg hover:shadow-xl transition-all"
+                className="w-full mt-6 bg-secondary hover:bg-secondary/90 text-secondary-foreground font-bold h-12 text-lg shadow-lg hover:shadow-xl transition-all"
+                onClick={() => window.open(PURCHASE_LINK, "_blank")}
               >
-                <a href={waLink} target="_blank" rel="noreferrer">
-                  Falar no WhatsApp Agora
-                </a>
+                Ir para Checkout
+                <ExternalLink className="ml-2 h-5 w-5" />
               </Button>
             </motion.div>
           ) : (
@@ -142,10 +161,13 @@ export function LeadForm() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel className="text-gray-700 font-semibold">
-                          Operadora de Preferência
+                          Operadora
                         </FormLabel>
                         <Select
-                          onValueChange={field.onChange}
+                          onValueChange={(value) => {
+                            field.onChange(value);
+                            setSelectedPlan(null);
+                          }}
                           defaultValue={field.value}
                         >
                           <FormControl>
@@ -164,10 +186,40 @@ export function LeadForm() {
                     )}
                   />
 
+                  {operatorPlans.length > 0 && (
+                    <div className="space-y-3">
+                      <label className="text-gray-700 font-semibold text-sm">
+                        Selecione seu Plano
+                      </label>
+                      <div className="space-y-2">
+                        {operatorPlans.map((plan) => (
+                          <Card
+                            key={plan.id}
+                            onClick={() => setSelectedPlan(plan.id)}
+                            className={`p-4 cursor-pointer transition-all border-2 ${
+                              selectedPlan === plan.id
+                                ? "border-primary bg-blue-50"
+                                : "border-gray-200 bg-white hover:border-gray-300"
+                            }`}
+                          >
+                            <div className="flex justify-between items-center">
+                              <span className="font-semibold text-gray-900">
+                                {plan.name}
+                              </span>
+                              <span className="text-lg font-bold text-primary">
+                                R$ {plan.price}
+                              </span>
+                            </div>
+                          </Card>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
                   <Button
                     type="submit"
-                    disabled={isPending}
-                    className="w-full h-14 text-lg font-bold bg-secondary hover:bg-secondary/90 text-secondary-foreground shadow-lg hover:shadow-orange-500/20 hover:-translate-y-0.5 transition-all duration-200"
+                    disabled={isPending || !selectedPlan}
+                    className="w-full h-14 text-lg font-bold bg-secondary hover:bg-secondary/90 text-secondary-foreground shadow-lg hover:shadow-orange-500/20 hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {isPending ? (
                       <>
@@ -176,7 +228,7 @@ export function LeadForm() {
                       </>
                     ) : (
                       <>
-                        Solicitar meu Chip
+                        Continuar para Compra
                         <Send className="ml-2 h-5 w-5" />
                       </>
                     )}

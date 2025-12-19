@@ -1,5 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
-import { api, type InsertLead } from "@shared/routes";
+import { api } from "@shared/routes";
+import { type InsertLead } from "@shared/schema";
 import { useToast } from "@/hooks/use-toast";
 
 export function useCreateLead() {
@@ -29,7 +30,7 @@ export function useCreateLead() {
     onSuccess: () => {
       toast({
         title: "Sucesso!",
-        description: "Sua solicitação foi enviada. Entraremos em contato em breve.",
+        description: "Redirecionando para checkout...",
         variant: "default",
       });
     },
