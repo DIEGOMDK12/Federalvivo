@@ -206,10 +206,16 @@ export default function Home() {
               </ul>
             </div>
             <div>
-              <h4 className="font-bold mb-4 text-gray-200">Contato</h4>
+              <h4 className="font-bold mb-4 text-gray-200">Suporte</h4>
               <ul className="space-y-2 text-sm text-gray-400">
-                <li>suporte@chipfederal.com.br</li>
-                <li><a href="https://wa.me/5592985528004" target="_blank" rel="noreferrer" className="hover:text-primary transition-colors">(92) 98552-8004</a></li>
+                <li><a href="https://wa.me/5592985528004" target="_blank" rel="noreferrer" className="hover:text-primary transition-colors">WhatsApp: (92) 98552-8004</a></li>
+                <li>Email: suporte@chipfederal.com.br</li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-bold mb-4 text-gray-200">Seja Revendedor</h4>
+              <ul className="space-y-2 text-sm text-gray-400">
+                <li><a href="https://wa.me/5592985528004" target="_blank" rel="noreferrer" className="hover:text-primary transition-colors">WhatsApp: (92) 98552-8004</a></li>
               </ul>
             </div>
           </div>
