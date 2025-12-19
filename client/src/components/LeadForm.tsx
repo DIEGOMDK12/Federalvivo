@@ -2,7 +2,7 @@ import { PLANS } from "@shared/schema";
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 
-const PURCHASE_LINK = "https://federalassociados.com.br/pbi/cadastro/16484217122025080607";
+const PURCHASE_LINK = "https://federalassociados.com.br/registro/164843";
 
 export function LeadForm() {
   const handlePlanSelect = (operator: string, planName: string, planId: string) => {
