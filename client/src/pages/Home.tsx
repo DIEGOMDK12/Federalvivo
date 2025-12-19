@@ -123,6 +123,63 @@ export default function Home() {
         <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-gray-50 to-transparent"></div>
       </section>
 
+      {/* Internet Never Stops Section */}
+      <section className="py-16 bg-gradient-to-r from-blue-50 to-cyan-50 relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-primary/10 rounded-full blur-3xl -mr-48 -mt-48"></div>
+        <div className="absolute bottom-0 left-0 w-80 h-80 bg-secondary/10 rounded-full blur-3xl -ml-40 -mb-40"></div>
+        
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="text-center"
+          >
+            <div className="inline-block px-4 py-2 bg-white rounded-full border border-primary/20 mb-6">
+              <span className="text-primary font-bold text-sm uppercase tracking-wider">Tranquilidade</span>
+            </div>
+            
+            <h2 className="text-3xl md:text-4xl font-bold font-display text-gray-900 mb-6">
+              Internet que <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-blue-500">Nunca Para</span>
+            </h2>
+            
+            <p className="text-xl text-gray-700 max-w-2xl mx-auto leading-relaxed mb-8">
+              Usou todos os seus gigas? Sem problema! 🎉 Sua internet não fica desligada, apenas reduz a velocidade. Você continua conectado navegando sem interrupção.
+            </p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                className="bg-white rounded-xl p-6 shadow-md border border-gray-100"
+              >
+                <div className="text-3xl mb-3">📱</div>
+                <h3 className="font-bold text-gray-900 mb-2">Sempre Conectado</h3>
+                <p className="text-sm text-gray-600">Sua conexão continua 24/7, sem pausas ou cortes de serviço.</p>
+              </motion.div>
+              
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                className="bg-white rounded-xl p-6 shadow-md border border-gray-100"
+              >
+                <div className="text-3xl mb-3">⚡</div>
+                <h3 className="font-bold text-gray-900 mb-2">Sem Surpresas</h3>
+                <p className="text-sm text-gray-600">Redução de velocidade gradual, nunca um corte abrupt.</p>
+              </motion.div>
+              
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                className="bg-white rounded-xl p-6 shadow-md border border-gray-100"
+              >
+                <div className="text-3xl mb-3">🔄</div>
+                <h3 className="font-bold text-gray-900 mb-2">Volta à Velocidade Total</h3>
+                <p className="text-sm text-gray-600">No próximo mês, sua velocidade volta ao máximo automaticamente.</p>
+              </motion.div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
       {/* Benefits Grid */}
       <section id="benefits" className="py-20 bg-gray-50 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
