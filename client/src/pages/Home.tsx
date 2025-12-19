@@ -174,53 +174,10 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CTA Section / Form */}
+      {/* CTA Section / Plan Selection */}
       <section id="lead-form" className="py-20 bg-white relative overflow-hidden">
-        {/* Background decorative elements */}
-        <div className="absolute top-0 right-0 w-1/2 h-full bg-blue-50/50 skew-x-12 translate-x-20"></div>
-        
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            
-            <div className="order-2 lg:order-1">
-              <h2 className="text-3xl md:text-4xl font-bold font-display text-gray-900 mb-6">
-                Chegou a hora de ter <br/>
-                <span className="text-primary">Internet de Verdade</span>
-              </h2>
-              <p className="text-gray-600 text-lg mb-8 leading-relaxed">
-                Não perca mais tempo com planos limitados. O Plano Pérola foi desenhado para quem precisa estar sempre conectado.
-              </p>
-              
-              <ul className="space-y-4 mb-8">
-                {[
-                  "Chip enviado para todo o Brasil",
-                  "Ativação rápida e simples",
-                  "Suporte humanizado via WhatsApp",
-                  "Garantia de satisfação de 7 dias"
-                ].map((item, i) => (
-                  <li key={i} className="flex items-center gap-3 text-gray-700 font-medium">
-                    <div className="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center">
-                      <Check className="w-4 h-4 text-green-600" />
-                    </div>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-              
-              <div className="p-6 bg-yellow-50 rounded-2xl border border-yellow-100">
-                <div className="flex items-center gap-4 mb-2">
-                  <div className="text-3xl font-bold text-gray-900">R$ 49,90</div>
-                  <span className="text-sm bg-yellow-200 text-yellow-800 px-2 py-1 rounded font-bold uppercase tracking-wider">Promoção</span>
-                </div>
-                <p className="text-sm text-gray-600">Valor mensal fixo. Sem pegadinhas.</p>
-              </div>
-            </div>
-
-            <div className="order-1 lg:order-2">
-              <LeadForm />
-            </div>
-            
-          </div>
+          <LeadForm />
         </div>
       </section>
 
