@@ -5,10 +5,14 @@ import { Card } from "@/components/ui/card";
 const PURCHASE_LINK = "https://federalassociados.com.br/registro/164843";
 
 export function LeadForm() {
-  const handlePlanSelect = (operator: string, planName: string, planId: string) => {
+  const handlePlanSelect = (operator: string, planName: string, planId: string, planPrice: string) => {
+    // Extract plan number from ID (e.g., "vivo-1" -> "1")
+    const planNumber = planId.split('-')[1];
     const params = new URLSearchParams({
       operadora: operator,
-      plano: planId,
+      plano: planNumber,
+      nome_plano: planName,
+      preco: planPrice,
     });
     window.open(`${PURCHASE_LINK}?${params.toString()}`, "_blank");
   };
@@ -51,7 +55,7 @@ export function LeadForm() {
                     whileTap={{ scale: 0.98 }}
                   >
                     <Card
-                      onClick={() => handlePlanSelect(key, plan.name, plan.id)}
+                      onClick={() => handlePlanSelect(key, plan.name, plan.id, plan.price)}
                       className="p-4 cursor-pointer transition-all border-2 border-gray-200 hover:border-primary bg-white hover:shadow-xl hover:shadow-primary/20"
                     >
                       <div className="text-center">
