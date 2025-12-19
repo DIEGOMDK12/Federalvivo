@@ -1,5 +1,6 @@
 import { LeadForm } from "@/components/LeadForm";
 import { FeatureCard } from "@/components/FeatureCard";
+import { WhatsAppFloat } from "@/components/WhatsAppFloat";
 import { motion } from "framer-motion";
 import { 
   Wifi, 
@@ -19,6 +20,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gray-50 overflow-x-hidden">
+      <WhatsAppFloat />
       {/* Navigation */}
       <nav className="fixed w-full z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
