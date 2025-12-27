@@ -6,6 +6,12 @@ const PURCHASE_LINK = "https://federalassociados.com.br/pbi/cadastro/16484217122
 
 export function LeadForm() {
   const handlePlanSelect = (operator: string, planName: string, planId: string, planPrice: string) => {
+    // Record link click
+    fetch("/api/analytics/link-click", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+    }).catch((err) => console.error("Failed to record link click:", err));
+
     // Extract plan number from ID (e.g., "vivo-1" -> "1")
     const planNumber = planId.split('-')[1];
     const params = new URLSearchParams({

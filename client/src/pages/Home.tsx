@@ -2,6 +2,7 @@ import { LeadForm } from "@/components/LeadForm";
 import { FeatureCard } from "@/components/FeatureCard";
 import { WhatsAppFloat } from "@/components/WhatsAppFloat";
 import { motion } from "framer-motion";
+import { useEffect } from "react";
 import { 
   Wifi, 
   PhoneCall, 
@@ -14,6 +15,14 @@ import {
 } from "lucide-react";
 
 export default function Home() {
+  useEffect(() => {
+    fetch("/api/analytics/page-view", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ page: "home" }),
+    }).catch((err) => console.error("Failed to record page view:", err));
+  }, []);
+
   const scrollToForm = () => {
     document.getElementById("lead-form")?.scrollIntoView({ behavior: "smooth" });
   };

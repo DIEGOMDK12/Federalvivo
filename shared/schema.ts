@@ -1,4 +1,4 @@
-import { pgTable, text, serial, timestamp, boolean } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, timestamp, boolean, integer } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -13,6 +13,17 @@ export const leads = pgTable("leads", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
+export const pageViews = pgTable("page_views", {
+  id: serial("id").primaryKey(),
+  page: text("page").notNull().default("home"),
+  viewedAt: timestamp("viewed_at").defaultNow(),
+});
+
+export const linkClicks = pgTable("link_clicks", {
+  id: serial("id").primaryKey(),
+  clickedAt: timestamp("clicked_at").defaultNow(),
+});
+
 export const insertLeadSchema = createInsertSchema(leads).omit({ 
   id: true, 
   createdAt: true,
@@ -21,6 +32,8 @@ export const insertLeadSchema = createInsertSchema(leads).omit({
 
 export type Lead = typeof leads.$inferSelect;
 export type InsertLead = z.infer<typeof insertLeadSchema>;
+export type PageView = typeof pageViews.$inferSelect;
+export type LinkClick = typeof linkClicks.$inferSelect;
 
 // Plans data structure
 export const PLANS = {

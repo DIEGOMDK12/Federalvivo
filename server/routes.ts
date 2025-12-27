@@ -25,5 +25,40 @@ export async function registerRoutes(
     }
   });
 
+  app.post("/api/analytics/page-view", async (req, res) => {
+    try {
+      const { page } = req.body;
+      await storage.recordPageView(page);
+      res.status(201).json({ success: true });
+    } catch (err) {
+      console.error("Error recording page view:", err);
+      res.status(500).json({ error: "Failed to record page view" });
+    }
+  });
+
+  app.post("/api/analytics/link-click", async (req, res) => {
+    try {
+      await storage.recordLinkClick();
+      res.status(201).json({ success: true });
+    } catch (err) {
+      console.error("Error recording link click:", err);
+      res.status(500).json({ error: "Failed to record link click" });
+    }
+  });
+
+  app.get("/api/analytics", async (req, res) => {
+    try {
+      const password = req.query.password as string;
+      if (password !== "506731") {
+        return res.status(401).json({ error: "Unauthorized" });
+      }
+      const analytics = await storage.getAnalytics();
+      res.json(analytics);
+    } catch (err) {
+      console.error("Error fetching analytics:", err);
+      res.status(500).json({ error: "Failed to fetch analytics" });
+    }
+  });
+
   return httpServer;
 }
