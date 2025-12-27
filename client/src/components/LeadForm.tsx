@@ -5,12 +5,18 @@ import { Card } from "@/components/ui/card";
 const PURCHASE_LINK = "https://federalassociados.com.br/pbi/cadastro/16484217122025080607";
 
 export function LeadForm() {
-  const handlePlanSelect = (operator: string, planName: string, planId: string, planPrice: string) => {
-    // Record link click
-    fetch("/api/analytics/link-click", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-    }).catch((err) => console.error("Failed to record link click:", err));
+  const handlePlanSelect = async (operator: string, planName: string, planId: string, planPrice: string) => {
+    // Record link click - use keepalive to ensure request completes even if page unloads
+    try {
+      await fetch("/api/analytics/link-click", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        keepalive: true,
+      });
+      console.log("✓ Clique registrado com sucesso");
+    } catch (err) {
+      console.error("Erro ao registrar clique:", err);
+    }
 
     // Extract plan number from ID (e.g., "vivo-1" -> "1")
     const planNumber = planId.split('-')[1];
@@ -20,7 +26,10 @@ export function LeadForm() {
       nome_plano: planName,
       preco: planPrice,
     });
-    window.open(`${PURCHASE_LINK}?${params.toString()}`, "_blank");
+
+    // Open link in new tab
+    const url = `${PURCHASE_LINK}?${params.toString()}`;
+    window.open(url, "_blank");
   };
 
   const operators = [
@@ -63,6 +72,7 @@ export function LeadForm() {
                     <Card
                       onClick={() => handlePlanSelect(key, plan.name, plan.id, plan.price)}
                       className="p-4 cursor-pointer transition-all border-2 border-gray-200 hover:border-primary bg-white hover:shadow-xl hover:shadow-primary/20"
+                      data-testid={`card-plan-${key}-${plan.id}`}
                     >
                       <div className="text-center">
                         <p className="font-semibold text-gray-900 mb-2">

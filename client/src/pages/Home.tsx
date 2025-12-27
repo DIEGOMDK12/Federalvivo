@@ -16,11 +16,17 @@ import {
 
 export default function Home() {
   useEffect(() => {
+    // Record page view with keepalive for reliability
     fetch("/api/analytics/page-view", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ page: "home" }),
-    }).catch((err) => console.error("Failed to record page view:", err));
+      keepalive: true,
+    }).then(() => {
+      console.log("✓ Visualização da página registrada");
+    }).catch((err) => {
+      console.error("Erro ao registrar visualização:", err);
+    });
   }, []);
 
   const scrollToForm = () => {
