@@ -1,14 +1,44 @@
-import { db } from "./db";
-import { pageViews, linkClicks } from "@shared/schema";
+import { pool } from "./db";
 
 export async function ensureTables() {
+  const client = await pool.connect();
   try {
-    // Try to query tables to ensure they exist
-    // If they don't exist, drizzle-orm will create them via the schema
-    await db.select().from(pageViews).limit(0);
-    await db.select().from(linkClicks).limit(0);
-    console.log("✓ Analytics tables verified");
+    // Create page_views table if it doesn't exist
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS page_views (
+        id SERIAL PRIMARY KEY,
+        page TEXT NOT NULL DEFAULT 'home',
+        viewed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+
+    // Create link_clicks table if it doesn't exist
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS link_clicks (
+        id SERIAL PRIMARY KEY,
+        clicked_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+
+    // Create leads table if it doesn't exist
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS leads (
+        id SERIAL PRIMARY KEY,
+        name TEXT NOT NULL,
+        whatsapp TEXT NOT NULL,
+        operator TEXT NOT NULL,
+        plan TEXT NOT NULL,
+        price TEXT NOT NULL,
+        status TEXT DEFAULT 'new',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+
+    console.log("✓ Analytics tables verified/created");
   } catch (error) {
-    console.log("Analytics tables will be created on first use");
+    console.error("Error creating tables:", error instanceof Error ? error.message : error);
+    throw error;
+  } finally {
+    client.release();
   }
 }
