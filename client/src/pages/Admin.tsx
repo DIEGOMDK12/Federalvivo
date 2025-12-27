@@ -10,6 +10,15 @@ export default function Admin() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [passwordInput, setPasswordInput] = useState("");
 
+  // Load auth state from localStorage on mount
+  useEffect(() => {
+    const savedPassword = localStorage.getItem("adminPassword");
+    if (savedPassword) {
+      setPassword(savedPassword);
+      setIsAuthenticated(true);
+    }
+  }, []);
+
   const { data: analytics, isLoading, refetch, error } = useQuery({
     queryKey: ["/api/analytics", password],
     queryFn: async () => {
@@ -35,7 +44,15 @@ export default function Admin() {
     if (passwordInput.trim()) {
       setPassword(passwordInput);
       setIsAuthenticated(true);
+      localStorage.setItem("adminPassword", passwordInput);
     }
+  };
+
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    setPassword("");
+    setPasswordInput("");
+    localStorage.removeItem("adminPassword");
   };
 
   if (!isAuthenticated) {
@@ -136,11 +153,7 @@ export default function Admin() {
         <div className="mt-8 flex gap-4 justify-end">
           <Button 
             variant="outline"
-            onClick={() => {
-              setIsAuthenticated(false);
-              setPassword("");
-              setPasswordInput("");
-            }}
+            onClick={handleLogout}
             data-testid="button-admin-logout"
           >
             Sair
