@@ -74,12 +74,14 @@ export default function Home() {
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                <button 
-                  onClick={scrollToForm}
-                  className="px-8 py-4 bg-secondary text-secondary-foreground text-lg font-bold rounded-xl shadow-[0_10px_20px_rgba(245,158,11,0.3)] hover:shadow-[0_15px_25px_rgba(245,158,11,0.4)] hover:-translate-y-1 transition-all duration-300"
+                <a 
+                  href="https://federalassociados.com.br/pbi/cadastro/16484217122025080607"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="px-8 py-4 bg-secondary text-secondary-foreground text-lg font-bold rounded-xl shadow-[0_10px_20px_rgba(245,158,11,0.3)] hover:shadow-[0_15px_25px_rgba(245,158,11,0.4)] hover:-translate-y-1 transition-all duration-300 inline-block text-center"
                 >
                   Comprar Agora
-                </button>
+                </a>
                 <a 
                   href="#benefits"
                   className="px-8 py-4 bg-white/10 backdrop-blur-sm border border-white/20 text-white text-lg font-semibold rounded-xl hover:bg-white/20 transition-all"
