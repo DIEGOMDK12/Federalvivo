@@ -17,7 +17,7 @@ export default function Admin() {
         const response = await fetch(`/api/analytics?password=${encodeURIComponent(password)}`);
         if (!response.ok) {
           const errorData = await response.json();
-          throw new Error(errorData.error || "Invalid password");
+          throw new Error(errorData.error || "Senha inválida");
         }
         return response.json();
       } catch (err) {
@@ -27,12 +27,15 @@ export default function Admin() {
     },
     enabled: isAuthenticated && password !== "",
     refetchInterval: 5000,
+    retry: false,
   });
 
   const handleAuth = (e: React.FormEvent) => {
     e.preventDefault();
-    setPassword(passwordInput);
-    setIsAuthenticated(true);
+    if (passwordInput.trim()) {
+      setPassword(passwordInput);
+      setIsAuthenticated(true);
+    }
   };
 
   if (!isAuthenticated) {
@@ -51,15 +54,16 @@ export default function Admin() {
           <form onSubmit={handleAuth} className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Senha
+                Senha de Acesso
               </label>
               <Input
                 type="password"
                 value={passwordInput}
                 onChange={(e) => setPasswordInput(e.target.value)}
-                placeholder="Digite sua senha"
+                placeholder="Digite a senha"
                 className="w-full"
                 data-testid="input-admin-password"
+                autoFocus
               />
             </div>
             <Button 
@@ -70,6 +74,12 @@ export default function Admin() {
               Entrar
             </Button>
           </form>
+
+          {error && (
+            <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-md">
+              <p className="text-red-600 text-sm">Senha incorreta</p>
+            </div>
+          )}
         </Card>
       </div>
     );
@@ -123,7 +133,7 @@ export default function Admin() {
           </div>
         ) : null}
 
-        <div className="mt-8 flex justify-end">
+        <div className="mt-8 flex gap-4 justify-end">
           <Button 
             variant="outline"
             onClick={() => {
