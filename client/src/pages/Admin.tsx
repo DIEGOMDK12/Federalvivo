@@ -10,14 +10,20 @@ export default function Admin() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [passwordInput, setPasswordInput] = useState("");
 
-  const { data: analytics, isLoading, refetch } = useQuery({
+  const { data: analytics, isLoading, refetch, error } = useQuery({
     queryKey: ["/api/analytics", password],
     queryFn: async () => {
-      const response = await fetch(`/api/analytics?password=${password}`);
-      if (!response.ok) {
-        throw new Error("Invalid password");
+      try {
+        const response = await fetch(`/api/analytics?password=${encodeURIComponent(password)}`);
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || "Invalid password");
+        }
+        return response.json();
+      } catch (err) {
+        console.error("Analytics error:", err);
+        throw err;
       }
-      return response.json();
     },
     enabled: isAuthenticated && password !== "",
     refetchInterval: 5000,
@@ -81,6 +87,18 @@ export default function Admin() {
           <div className="text-center py-12">
             <p className="text-gray-600">Carregando dados...</p>
           </div>
+        ) : error ? (
+          <Card className="p-8 text-center bg-red-50 border-red-200">
+            <p className="text-red-600 text-lg mb-4">Erro ao carregar dados</p>
+            <p className="text-red-500 text-sm mb-6">{error instanceof Error ? error.message : "Erro desconhecido"}</p>
+            <Button 
+              variant="outline"
+              onClick={() => refetch()}
+              data-testid="button-admin-retry"
+            >
+              Tentar Novamente
+            </Button>
+          </Card>
         ) : analytics ? (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Card className="p-8 bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-200">
@@ -103,11 +121,7 @@ export default function Admin() {
               </div>
             </Card>
           </div>
-        ) : (
-          <Card className="p-8 text-center">
-            <p className="text-red-600 text-lg">Erro ao carregar dados. Verifique a senha e tente novamente.</p>
-          </Card>
-        )}
+        ) : null}
 
         <div className="mt-8 flex justify-end">
           <Button 
