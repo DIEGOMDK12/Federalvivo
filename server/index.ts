@@ -2,6 +2,7 @@ import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { serveStatic } from "./static";
 import { createServer } from "http";
+import { ensureTables } from "./migrations";
 
 const app = express();
 const httpServer = createServer(app);
@@ -11,6 +12,11 @@ declare module "http" {
     rawBody: unknown;
   }
 }
+
+// Ensure database tables exist on startup
+ensureTables().catch(err => {
+  console.warn("Warning: Could not verify tables:", err.message);
+});
 
 app.use(
   express.json({
